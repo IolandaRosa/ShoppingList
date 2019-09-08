@@ -7,8 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.example.shoppinglistapp.R
+import com.example.shoppinglistapp.adapter.ProductListFragmentAdapter
+import com.example.shoppinglistapp.model.Product
+import kotlinx.android.synthetic.main.fragment_product_list.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -16,6 +21,8 @@ import com.example.shoppinglistapp.R
 //private const val ARG_PARAM2 = "param2"
 
 class ProductListFragment : Fragment() {
+
+    private lateinit var productRecyclerView:RecyclerView
 
     //private var param1: String? = null
     //private var param2: String? = null
@@ -33,8 +40,18 @@ class ProductListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_product_list, container, false)
+
+        val view = inflater.inflate(R.layout.fragment_product_list, container, false)
+
+        productRecyclerView = view.findViewById(R.id.recyclerViewProductsList)
+
+        return view
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        setupProductList()
     }
 
     /*fun onButtonPressed(uri: Uri) {
@@ -55,8 +72,16 @@ class ProductListFragment : Fragment() {
         //listener = null
     }
 
+    private fun setupProductList(){
+        productRecyclerView.setHasFixedSize(true)
+        productRecyclerView.layoutManager = LinearLayoutManager(activity)
+        val productListAdapter = ProductListFragmentAdapter(mutableListOf(Product("feijao"),Product("arroz")))
+        productRecyclerView.adapter=productListAdapter
+
+    }
+
     /*interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         fun onFragmentInteraction(uri: Uri)
     }*/
 
