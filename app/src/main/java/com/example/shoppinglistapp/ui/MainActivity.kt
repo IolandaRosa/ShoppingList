@@ -1,7 +1,8 @@
-package com.example.shoppinglistapp
+package com.example.shoppinglistapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.shoppinglistapp.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
