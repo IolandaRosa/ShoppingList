@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.example.shoppinglistapp.R
 import com.example.shoppinglistapp.adapter.ProductListFragmentAdapter
+import com.example.shoppinglistapp.model.Category
 import com.example.shoppinglistapp.model.Product
 import kotlinx.android.synthetic.main.fragment_product_list.*
 
@@ -22,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_product_list.*
 
 class ProductListFragment : Fragment() {
 
-    private lateinit var productRecyclerView:RecyclerView
+    private lateinit var productRecyclerView: RecyclerView
 
     //private var param1: String? = null
     //private var param2: String? = null
@@ -72,11 +73,19 @@ class ProductListFragment : Fragment() {
         //listener = null
     }
 
-    private fun setupProductList(){
+    private fun setupProductList() {
         productRecyclerView.setHasFixedSize(true)
         productRecyclerView.layoutManager = LinearLayoutManager(activity)
-        val productListAdapter = ProductListFragmentAdapter(mutableListOf(Product("feijao"),Product("arroz")))
-        productRecyclerView.adapter=productListAdapter
+        val productListAdapter = ProductListFragmentAdapter(
+            mutableListOf(
+                Product(
+                    "feijao",
+                    Category("cat"), null
+                ), Product("arroz", Category("cat"), null)
+            )
+        )
+
+        productRecyclerView.adapter = productListAdapter
 
     }
 
