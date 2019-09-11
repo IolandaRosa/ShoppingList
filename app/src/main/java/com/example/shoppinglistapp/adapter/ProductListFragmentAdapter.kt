@@ -1,11 +1,14 @@
 package com.example.shoppinglistapp.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglistapp.R
+import com.example.shoppinglistapp.model.Category
 import com.example.shoppinglistapp.model.Product
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.textfield.TextInputEditText
@@ -30,6 +33,11 @@ class ProductListFragmentAdapter(var products: MutableList<Product>) :
         holder.nameCheckboxView.isChecked=p.myList
         holder.brandView.text = if (p.brand.isEmpty()) "Sem marca" else p.brand
         holder.quantityView.hint =  (p.quantity).toString()
+        holder.nameCategoryView.text = p.category?.name
+
+        val parseColor = Color.parseColor(p.category?.color!!)
+
+        holder.colorCategoryView.setColorFilter(parseColor)
 
         /*var p = Product(holder.nameCheckboxView.text.toString())
 
@@ -60,6 +68,8 @@ class ProductListFragmentAdapter(var products: MutableList<Product>) :
         val nameCheckboxView = v.findViewById<MaterialCheckBox>(R.id.checkboxProductName)
         val brandView = v.findViewById<MaterialTextView>(R.id.textViewProductBrand)
         val quantityView = v.findViewById<TextInputEditText>(R.id.editTextQuantity)
+        val colorCategoryView = v.findViewById<ImageView>(R.id.imageViewColorCategory)
+        val nameCategoryView = v.findViewById<MaterialTextView>(R.id.textViewCategory)
     }
 
 }

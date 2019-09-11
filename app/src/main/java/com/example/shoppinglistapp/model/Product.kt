@@ -1,17 +1,26 @@
 package com.example.shoppinglistapp.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
+import androidx.room.*
 
-@Entity(tableName = "products")
+@Entity(
+    tableName = "products",
+    foreignKeys = [
+        ForeignKey(
+            entity = Category::class,
+            parentColumns = ["id"],
+            childColumns = ["categoryId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [Index("categoryId")]
+)
+
 data class Product(
     @PrimaryKey(autoGenerate = true) var id:Long?=null,
-    var name: String,
-    @Ignore var category: Category,
-    @Ignore var subcategories:MutableList<Subcategory> ?,
+    var name: String="",
     var brand: String="",
     var quantity: Int = 0,
-    @ColumnInfo(name="is_in_myList") var myList: Boolean = false
+    @Ignore var category: Category?=null,
+    var myList: Boolean = false,
+    var categoryId:Long?=null
 )

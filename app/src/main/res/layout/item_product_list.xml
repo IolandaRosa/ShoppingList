@@ -12,36 +12,60 @@
         android:layout_height="match_parent"
         android:padding="5dp">
 
+        <ImageView
+            android:id="@+id/imageViewColorCategory"
+            android:layout_width="5dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/image_description"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:color/holo_blue_bright" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textViewCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toEndOf="@+id/imageViewColorCategory"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Categoria" />
+
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkboxProductName"
+            style="@style/Theme.MaterialComponents.DayNight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-            style="@style/Theme.MaterialComponents.DayNight"
             android:checked="false"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageViewColorCategory"
+            app:layout_constraintTop_toBottomOf="@+id/textViewCategory"
+            tools:layout_editor_absoluteX="7dp"
             tools:text="Product Name" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewProductBrand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Marca do Produto"
-            android:textStyle="italic"
+            android:layout_marginStart="8dp"
             android:textColor="@color/colorPrimaryLight"
-            android:layout_marginStart="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkboxProductName" />
+            android:textStyle="italic"
+            app:layout_constraintStart_toEndOf="@+id/imageViewColorCategory"
+            app:layout_constraintTop_toBottomOf="@+id/checkboxProductName"
+            tools:text="Marca do Produto" />
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/Theme.MaterialComponents.Light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Theme.MaterialComponents.Light"
             android:padding="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -52,11 +76,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/product_quantity"
-                app:hintEnabled='true'
                 android:inputType="number"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:hintEnabled='true' />
 
         </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.cardview.widget.CardView>

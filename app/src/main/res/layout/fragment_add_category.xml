@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.AddCategoryFragment">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputLayoutCategoryName"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:padding="2dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="15"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextCategoryName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/name"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:hintEnabled='true' />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textViewCategoryColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/color"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutCategoryName" />
+
+    <com.skydoves.colorpickerview.ColorPickerView
+        android:id="@+id/colorPickerView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewCategoryColor"
+        app:palette="@drawable/palette"
+        app:selector="@drawable/wheel" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textViewCategoryColorChoose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/color_choosen"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintStart_toStartOf="@id/colorPickerView"
+        app:layout_constraintTop_toBottomOf="@+id/colorPickerView" />
+
+    <ImageView
+        android:id="@+id/imageViewColorChosen"
+        android:contentDescription="@string/image_description"
+        android:layout_width="140dp"
+        android:layout_height="20dp"
+        android:src="@android:color/holo_blue_bright"
+        app:layout_constraintEnd_toEndOf="@+id/colorPickerView"
+        app:layout_constraintTop_toTopOf="@+id/textViewCategoryColorChoose" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/material_button_save"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/ok"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCategoryColorChoose" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

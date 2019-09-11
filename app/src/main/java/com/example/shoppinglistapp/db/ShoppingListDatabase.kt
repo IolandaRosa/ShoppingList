@@ -6,12 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.shoppinglistapp.model.Category
 import com.example.shoppinglistapp.model.Product
-import com.example.shoppinglistapp.model.Subcategory
 
-@Database(entities = arrayOf(Product::class, Category::class, Subcategory::class), version = 1)
+@Database(entities = arrayOf(Product::class, Category::class), version = 2)
 abstract class ShoppingListDatabase : RoomDatabase() {
 
     abstract fun productDao():ProductDao
+    abstract fun categoryDao():CategoryDao
 
     companion object {
         private var instance: ShoppingListDatabase? = null
