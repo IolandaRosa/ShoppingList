@@ -5,10 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglistapp.R
-import com.example.shoppinglistapp.model.Category
 import com.example.shoppinglistapp.model.Product
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.textfield.TextInputEditText
@@ -30,38 +28,14 @@ class ProductListFragmentAdapter(var products: MutableList<Product>) :
 
         val p = products[position]
         holder.nameCheckboxView.text = p.name
-        holder.nameCheckboxView.isChecked=p.myList
+        holder.nameCheckboxView.isChecked = p.myList
         holder.brandView.text = if (p.brand.isEmpty()) "Sem marca" else p.brand
-        holder.quantityView.hint =  (p.quantity).toString()
+        holder.quantityView.hint = (p.quantity).toString()
         holder.nameCategoryView.text = p.category?.name
 
         val parseColor = Color.parseColor(p.category?.color!!)
 
         holder.colorCategoryView.setColorFilter(parseColor)
-
-        /*var p = Product(holder.nameCheckboxView.text.toString())
-
-        if (holder.nameCheckboxView.isChecked) {
-
-            p.myList = true
-        }
-
-        val brand = holder.brandView.text.toString()
-
-        if (holder.brandView.isVisible && !brand.isEmpty()) {
-            p.brand = brand
-        }
-
-        val quantityString = holder.quantityView.text.toString()
-
-        var quantity = 0
-        if(!quantityString.isEmpty()){
-            quantity = Integer.parseInt(quantityString)
-        }
-
-        if (quantity > 0) {
-            p.quantity = quantity
-        }*/
     }
 
     inner class ProductViewHolder(v: View) : RecyclerView.ViewHolder(v) {

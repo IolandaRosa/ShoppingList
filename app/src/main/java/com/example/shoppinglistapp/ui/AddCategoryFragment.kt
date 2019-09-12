@@ -16,15 +16,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.skydoves.colorpickerview.ColorPickerView
 import com.skydoves.colorpickerview.listeners.ColorListener
 
-//private const val ARG_PARAM1 = "param1"
-//private const val ARG_PARAM2 = "param2"
-
 class AddCategoryFragment : Fragment() {
-    /*
-    private var param1: String? = null
-    private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
-*/
+
     private lateinit var categoryViewModel: CategoryViewModel
     private lateinit var viewCategoryName: TextInputEditText
     private lateinit var viewColorPicker: ColorPickerView
@@ -34,10 +27,6 @@ class AddCategoryFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }*/
     }
 
     override fun onCreateView(
@@ -62,7 +51,10 @@ class AddCategoryFragment : Fragment() {
 
         viewColorPicker.setColorListener(ColorListener { color, fromUser ->
             viewColorChoosen.setColorFilter(color)
-            category.color = Integer.toHexString(color)
+
+            val hexColor = String.format("#%06X", (0xFFFFFF and color))
+
+            category.color = hexColor
         })
 
         btnOk.setOnClickListener {
@@ -86,37 +78,18 @@ class AddCategoryFragment : Fragment() {
         activity?.supportFragmentManager?.popBackStack()
     }
 
-    /*fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }*/
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        /* if (context is OnFragmentInteractionListener) {
-             listener = context
-         } else {
-             throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-         }*/
     }
 
     override fun onDetach() {
         super.onDetach()
-        //listener = null
     }
-
-    /*interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(uri: Uri)
-    }*/
 
     companion object {
 
         @JvmStatic
-        fun newInstance(/*param1: String, param2: String*/) =
-            AddCategoryFragment()/*.apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }*/
+        fun newInstance() = AddCategoryFragment()
     }
 }

@@ -10,8 +10,8 @@ import com.example.shoppinglistapp.model.Product
 @Database(entities = arrayOf(Product::class, Category::class), version = 2)
 abstract class ShoppingListDatabase : RoomDatabase() {
 
-    abstract fun productDao():ProductDao
-    abstract fun categoryDao():CategoryDao
+    abstract fun productDao(): ProductDao
+    abstract fun categoryDao(): CategoryDao
 
     companion object {
         private var instance: ShoppingListDatabase? = null

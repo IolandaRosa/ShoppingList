@@ -1,26 +1,24 @@
 package com.example.shoppinglistapp.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.shoppinglistapp.R
-import com.example.shoppinglistapp.viewModel.ProductViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var productListFragment: ProductListFragment
     private lateinit var addCategoryFragment: AddCategoryFragment
+    private lateinit var listCategoryFragment: ListCategoryFragment
 
     companion object {
         private const val TAG_FRAGMENT_PRODUCT_LIST = "ProductListFragment"
         private const val TAG_FRAGMENT_CATEGORY_ADD = "AddCategoryFragment"
+        private const val TAG_FRAGMENT_CATEGORY_LIST = "ListCategoryFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,10 +29,10 @@ class MainActivity : AppCompatActivity() {
 
         setupProductListFragment()
 
-        fab.setOnClickListener{
+        fab.setOnClickListener {
             //abrir fragmento para criar o produto
 
-            Toast.makeText(this,"Toast",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Toast", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -47,39 +45,48 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.menu_main,menu)
+        menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.action_add_category->{
-
+        when (item.itemId) {
+            R.id.action_add_category -> {
                 setupAddCategoryFragment()
                 return true
             }
-            R.id.action_list_category->{
+            R.id.action_list_category -> {
+                setupListCategoryFragment()
                 return super.onOptionsItemSelected(item)
             }
-            R.id.action_home->{
+            R.id.action_home -> {
                 return super.onOptionsItemSelected(item)
             }
-            R.id.action_my_list->{
+            R.id.action_my_list -> {
                 return super.onOptionsItemSelected(item)
             }
-            R.id.action_add_search->{
+            R.id.action_add_search -> {
                 return super.onOptionsItemSelected(item)
             }
-            else ->return super.onOptionsItemSelected(item)
+            else -> return super.onOptionsItemSelected(item)
 
         }
     }
 
-    private fun setupAddCategoryFragment(){
+    private fun setupAddCategoryFragment() {
         addCategoryFragment = AddCategoryFragment.newInstance()
+        setupFragementonBackStack(addCategoryFragment, TAG_FRAGMENT_CATEGORY_ADD)
+    }
+
+    private fun setupListCategoryFragment() {
+        listCategoryFragment = ListCategoryFragment.newInstance()
+        setupFragementonBackStack(listCategoryFragment, TAG_FRAGMENT_CATEGORY_LIST)
+    }
+
+    private fun setupFragementonBackStack(f: Fragment, t: String) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container,addCategoryFragment, TAG_FRAGMENT_CATEGORY_ADD)
-            .addToBackStack(TAG_FRAGMENT_CATEGORY_ADD)
+            .replace(R.id.fragment_container, f, t)
+            .addToBackStack(t)
             .commit()
     }
 }

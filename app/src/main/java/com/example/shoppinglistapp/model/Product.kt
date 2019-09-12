@@ -16,11 +16,11 @@ import androidx.room.*
 )
 
 data class Product(
-    @PrimaryKey(autoGenerate = true) var id:Long?=null,
-    var name: String="",
-    var brand: String="",
+    @PrimaryKey(autoGenerate = true) var id: Long? = null,
+    var name: String = "",
+    var brand: String = "",
     var quantity: Int = 0,
-    @Ignore var category: Category?=null,
+    @Ignore var category: Category? = null,
     var myList: Boolean = false,
-    var categoryId:Long?=null
+    var categoryId: Long? = null
 )

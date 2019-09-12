@@ -11,8 +11,8 @@ import com.example.shoppinglistapp.model.Product
 interface ProductDao {
 
     @Query("SELECT * FROM products")
-    fun getAll():LiveData<List<Product>>
+    fun getAll(): LiveData<List<Product>>
 
     @Insert(onConflict = REPLACE)
-    fun insert(product: Product):Long
+    fun insert(product: Product): Long
 }
