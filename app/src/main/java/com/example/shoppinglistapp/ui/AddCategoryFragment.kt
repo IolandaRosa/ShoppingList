@@ -1,6 +1,7 @@
 package com.example.shoppinglistapp.ui
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,14 +17,14 @@ import com.google.android.material.textfield.TextInputEditText
 import com.skydoves.colorpickerview.ColorPickerView
 import com.skydoves.colorpickerview.listeners.ColorListener
 
-class AddCategoryFragment : Fragment() {
+class AddCategoryFragment(var category: Category, var isAdd: Boolean) : Fragment() {
 
     private lateinit var categoryViewModel: CategoryViewModel
     private lateinit var viewCategoryName: TextInputEditText
     private lateinit var viewColorPicker: ColorPickerView
     private lateinit var viewColorChoosen: ImageView
     private lateinit var btnOk: MaterialButton
-    private var category: Category = Category()
+    private var init = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,10 +48,19 @@ class AddCategoryFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        setupCategoryOnFragment()
+
         categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
 
         viewColorPicker.setColorListener(ColorListener { color, fromUser ->
-            viewColorChoosen.setColorFilter(color)
+
+            if (init && category.color.trim().length > 1) {
+                viewColorChoosen.setColorFilter(Color.parseColor(category.color))
+            } else {
+                viewColorChoosen.setColorFilter(color)
+            }
+
+            init = false
 
             val hexColor = String.format("#%06X", (0xFFFFFF and color))
 
@@ -73,7 +83,11 @@ class AddCategoryFragment : Fragment() {
 
         category.name = name
 
-        categoryViewModel.insert(category)
+        if (isAdd) {
+            categoryViewModel.insert(category)
+        } else {
+            categoryViewModel.update(category)
+        }
 
         activity?.supportFragmentManager?.popBackStack()
     }
@@ -90,6 +104,11 @@ class AddCategoryFragment : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance() = AddCategoryFragment()
+        fun newInstance(category: Category, isAdd: Boolean) = AddCategoryFragment(category, isAdd)
+    }
+
+    private fun setupCategoryOnFragment() {
+        viewCategoryName.setText(category.name)
+
     }
 }

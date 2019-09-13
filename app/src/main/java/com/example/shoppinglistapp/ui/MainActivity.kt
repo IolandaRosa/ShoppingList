@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.shoppinglistapp.R
+import com.example.shoppinglistapp.model.Category
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG_FRAGMENT_PRODUCT_LIST = "ProductListFragment"
-        private const val TAG_FRAGMENT_CATEGORY_ADD = "AddCategoryFragment"
+        const val TAG_FRAGMENT_CATEGORY_ADD = "AddCategoryFragment"
         private const val TAG_FRAGMENT_CATEGORY_LIST = "ListCategoryFragment"
     }
 
@@ -57,10 +58,11 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.action_list_category -> {
                 setupListCategoryFragment()
-                return super.onOptionsItemSelected(item)
+                return true
             }
             R.id.action_home -> {
-                return super.onOptionsItemSelected(item)
+                setupProductListFragment()
+                return true
             }
             R.id.action_my_list -> {
                 return super.onOptionsItemSelected(item)
@@ -74,7 +76,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupAddCategoryFragment() {
-        addCategoryFragment = AddCategoryFragment.newInstance()
+        addCategoryFragment = AddCategoryFragment.newInstance(Category(), true)
         setupFragementonBackStack(addCategoryFragment, TAG_FRAGMENT_CATEGORY_ADD)
     }
 

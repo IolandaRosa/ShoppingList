@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -78,7 +77,14 @@ class ListCategoryFragment : Fragment(), OnDeleteCategoryListener, OnEditCategor
     }
 
     override fun onClickEditCategory(position: Int) {
-        Toast.makeText(context, "edit on $position", Toast.LENGTH_SHORT).show()
+
+        val editCategory = categories[position]
+
+        fragmentManager?.beginTransaction()?.replace(
+            R.id.fragment_container,
+            AddCategoryFragment.newInstance(editCategory, false),
+            MainActivity.TAG_FRAGMENT_CATEGORY_ADD
+        )?.addToBackStack(MainActivity.TAG_FRAGMENT_CATEGORY_ADD)?.commit()
     }
 
     override fun onClickDeleteCategory(position: Int) {
