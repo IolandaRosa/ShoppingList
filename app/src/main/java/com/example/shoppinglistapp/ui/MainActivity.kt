@@ -8,17 +8,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.shoppinglistapp.R
 import com.example.shoppinglistapp.model.Category
+import com.example.shoppinglistapp.model.Product
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var productListFragment: ProductListFragment
     private lateinit var addCategoryFragment: AddCategoryFragment
+    private lateinit var addProductFragment: AddProductFragment
     private lateinit var listCategoryFragment: ListCategoryFragment
 
     companion object {
         private const val TAG_FRAGMENT_PRODUCT_LIST = "ProductListFragment"
         const val TAG_FRAGMENT_CATEGORY_ADD = "AddCategoryFragment"
+        const val TAG_FRAGMENT_PRODUCT_ADD = "AddProductFragment"
         private const val TAG_FRAGMENT_CATEGORY_LIST = "ListCategoryFragment"
     }
 
@@ -31,9 +34,7 @@ class MainActivity : AppCompatActivity() {
         setupProductListFragment()
 
         fab.setOnClickListener {
-            //abrir fragmento para criar o produto
-
-            Toast.makeText(this, "Toast", Toast.LENGTH_SHORT).show()
+            setupAddProductFragment()
         }
     }
 
@@ -83,6 +84,12 @@ class MainActivity : AppCompatActivity() {
     private fun setupListCategoryFragment() {
         listCategoryFragment = ListCategoryFragment.newInstance()
         setupFragementonBackStack(listCategoryFragment, TAG_FRAGMENT_CATEGORY_LIST)
+    }
+
+    private fun setupAddProductFragment(){
+        addProductFragment = AddProductFragment.newInstance(Product(),true)
+        setupFragementonBackStack(addProductFragment, TAG_FRAGMENT_PRODUCT_ADD)
+
     }
 
     private fun setupFragementonBackStack(f: Fragment, t: String) {

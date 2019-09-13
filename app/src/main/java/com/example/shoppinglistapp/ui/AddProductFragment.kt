@@ -5,25 +5,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.example.shoppinglistapp.R
+import com.example.shoppinglistapp.model.Category
+import com.example.shoppinglistapp.model.Product
+import com.example.shoppinglistapp.utils.SpinnerAdapter
+import com.example.shoppinglistapp.viewModel.CategoryViewModel
+import com.example.shoppinglistapp.viewModel.ProductViewModel
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
 
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//private const val ARG_PARAM1 = "param1"
-//private const val ARG_PARAM2 = "param2"
+class AddProductFragment(private var product: Product, private var isAdd: Boolean) : Fragment() {
 
-class AddProductFragment : Fragment() {
-
-    private var param1: String? = null
-    /*private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null*/
+    private lateinit var viewProductName:TextInputEditText
+    private lateinit var viewProductBrand:TextInputEditText
+    private lateinit var spinnerCategories:Spinner
+    private lateinit var btnOk:MaterialButton
+    private lateinit var categoryViewModel:CategoryViewModel
+    private lateinit var productViewModel: ProductViewModel
+    private lateinit var categories:MutableList<Category>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }*/
     }
 
     override fun onCreateView(
@@ -31,7 +37,24 @@ class AddProductFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_product, container, false)
+        val view = inflater.inflate(R.layout.fragment_add_product, container, false)
+
+        viewProductName = view.findViewById(R.id.editTextProductName)
+        viewProductBrand = view.findViewById(R.id.editTextProductBrand)
+        spinnerCategories = view.findViewById(R.id.spinnerCategories)
+        btnOk = view.findViewById(R.id.material_button_save_product)
+
+        return view
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        setupViewModel()
+
+        populateSpinnerCategories()
+
+        setupProduct()
     }
 
     /*fun onButtonPressed(uri: Uri) {
@@ -52,6 +75,41 @@ class AddProductFragment : Fragment() {
         //listener = null
     }
 
+    private fun setupViewModel(){
+        productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
+
+        categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
+    }
+
+    private fun populateSpinnerCategories(){
+        //Vai buscar a lista de categorias
+        categoryViewModel.categoriesAll.observe(this, Observer { categoriesList ->
+            categories = categoriesList
+            //Vai popular o spinner com nome e cor
+            //Lista de Nome
+            var categoriesNames= mutableListOf<String>()
+            var categoriesColors= mutableListOf<String>()
+
+            for(c in categories){
+                categoriesNames.add(c.name)
+                categoriesColors.add(c.color)
+            }
+
+            val categoriesAdapter: SpinnerAdapter = SpinnerAdapter(activity?.applicationContext!!,categories)
+            spinnerCategories.adapter=categoriesAdapter
+
+            //setSpinnerListener()
+
+
+        })
+
+    }
+
+    private fun setupProduct(){
+        viewProductName.setText(product.name)
+        viewProductBrand.setText(product.brand)
+    }
+
 
     /*interface OnFragmentInteractionListener {
         fun onFragmentInteraction(uri: Uri)
@@ -59,12 +117,7 @@ class AddProductFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(/*param1: String, param2: String*/) =
-            AddProductFragment()/*.apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }*/
+        fun newInstance(product: Product, isAdd: Boolean) =
+            AddProductFragment(product, isAdd)
     }
 }

@@ -17,7 +17,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.skydoves.colorpickerview.ColorPickerView
 import com.skydoves.colorpickerview.listeners.ColorListener
 
-class AddCategoryFragment(var category: Category, var isAdd: Boolean) : Fragment() {
+class AddCategoryFragment(private var category: Category, private var isAdd: Boolean) : Fragment() {
 
     private lateinit var categoryViewModel: CategoryViewModel
     private lateinit var viewCategoryName: TextInputEditText

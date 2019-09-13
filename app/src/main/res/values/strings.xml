@@ -17,4 +17,6 @@
     <string name="menu_list_category">Ver Categorias</string>
     <string name="menu_home">Home</string>
     <string name="edit">Editar</string>
+    <string name="brand">Marca</string>
+    <string name="category">Categoria</string>
 </resources>
