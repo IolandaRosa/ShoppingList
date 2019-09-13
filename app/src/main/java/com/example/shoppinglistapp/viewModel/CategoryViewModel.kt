@@ -18,16 +18,20 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
     init {
         val categoryDao = ShoppingListDatabase.getInstance(application).categoryDao()
         categoryRepository = CategoryRepository(categoryDao)
-        categoriesAll = categoryRepository?.getAllCategories()!!
-    }
 
-    init {
-        val categoryDao = ShoppingListDatabase.getInstance(application).categoryDao()
-        categoryRepository = CategoryRepository(categoryDao)
+        categoriesAll = categoryRepository?.getAllCategories()!!
     }
 
     fun insert(category: Category) = GlobalScope.launch {
         categoryRepository?.insertCategory(category)
+    }
+
+    fun delete(category: Category) = GlobalScope.launch {
+        categoryRepository?.deleteCategory(category)
+    }
+
+    fun update(category: Category) = GlobalScope.launch {
+        categoryRepository?.updateCategory(category)
     }
 
 }

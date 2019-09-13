@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -12,13 +13,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglistapp.R
 import com.example.shoppinglistapp.adapter.CategoryListFragmentAdapter
+import com.example.shoppinglistapp.adapter.OnDeleteCategoryListener
+import com.example.shoppinglistapp.adapter.OnEditCategoryListener
 import com.example.shoppinglistapp.model.Category
 import com.example.shoppinglistapp.viewModel.CategoryViewModel
 
-class ListCategoryFragment : Fragment() {
+class ListCategoryFragment : Fragment(), OnDeleteCategoryListener, OnEditCategoryListener {
     private lateinit var recyclerViewCategoryList: RecyclerView
     private lateinit var categoryViewModel: CategoryViewModel
     private var categories = mutableListOf<Category>()
+    private lateinit var categoriesListAdapter: CategoryListFragmentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +38,6 @@ class ListCategoryFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_list_category, container, false)
 
         recyclerViewCategoryList = view.findViewById(R.id.recyclerViewCategoriesList)
-
-        setupCategoriesList()
 
         return view
     }
@@ -65,14 +67,25 @@ class ListCategoryFragment : Fragment() {
 
         recyclerViewCategoryList.layoutManager = LinearLayoutManager(activity)
 
-        val categoriesListAdapter = CategoryListFragmentAdapter(categories)
+        categoriesListAdapter = CategoryListFragmentAdapter(categories, this, this)
 
         categoryViewModel.categoriesAll.observe(this, Observer { categoriesList ->
             categories = categoriesList
             categoriesListAdapter.updateCategories(categories)
         })
 
-
         recyclerViewCategoryList.adapter = categoriesListAdapter
+    }
+
+    override fun onClickEditCategory(position: Int) {
+        Toast.makeText(context, "edit on $position", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onClickDeleteCategory(position: Int) {
+        val removedCategory = categories.removeAt(position)
+
+        categoriesListAdapter.updateCategories(categories)
+
+        categoryViewModel.delete(removedCategory)
     }
 }
