@@ -3,7 +3,6 @@ package com.example.shoppinglistapp.ui
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.shoppinglistapp.R
@@ -86,8 +85,8 @@ class MainActivity : AppCompatActivity() {
         setupFragementonBackStack(listCategoryFragment, TAG_FRAGMENT_CATEGORY_LIST)
     }
 
-    private fun setupAddProductFragment(){
-        addProductFragment = AddProductFragment.newInstance(Product(),true)
+    private fun setupAddProductFragment() {
+        addProductFragment = AddProductFragment.newInstance(Product(), true)
         setupFragementonBackStack(addProductFragment, TAG_FRAGMENT_PRODUCT_ADD)
 
     }

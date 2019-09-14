@@ -38,6 +38,14 @@ class ProductListFragmentAdapter(var products: MutableList<Product>) :
         holder.colorCategoryView.setColorFilter(parseColor)
     }
 
+    fun updateProducts(products: MutableList<Product>?) {
+
+        this.products = products!!
+
+        notifyDataSetChanged()
+
+    }
+
     inner class ProductViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val nameCheckboxView = v.findViewById<MaterialCheckBox>(R.id.checkboxProductName)
         val brandView = v.findViewById<MaterialTextView>(R.id.textViewProductBrand)

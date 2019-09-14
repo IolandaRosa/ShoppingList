@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,13 +22,13 @@ import com.google.android.material.textfield.TextInputEditText
 
 class AddProductFragment(private var product: Product, private var isAdd: Boolean) : Fragment() {
 
-    private lateinit var viewProductName:TextInputEditText
-    private lateinit var viewProductBrand:TextInputEditText
-    private lateinit var spinnerCategories:Spinner
-    private lateinit var btnOk:MaterialButton
-    private lateinit var categoryViewModel:CategoryViewModel
+    private lateinit var viewProductName: TextInputEditText
+    private lateinit var viewProductBrand: TextInputEditText
+    private lateinit var spinnerCategories: Spinner
+    private lateinit var btnOk: MaterialButton
+    private lateinit var categoryViewModel: CategoryViewModel
     private lateinit var productViewModel: ProductViewModel
-    private lateinit var categories:MutableList<Category>
+    private lateinit var categories: MutableList<Category>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +57,10 @@ class AddProductFragment(private var product: Product, private var isAdd: Boolea
         populateSpinnerCategories()
 
         setupProduct()
+
+        btnOk.setOnClickListener {
+            saveProduct();
+        }
     }
 
     /*fun onButtonPressed(uri: Uri) {
@@ -75,45 +81,80 @@ class AddProductFragment(private var product: Product, private var isAdd: Boolea
         //listener = null
     }
 
-    private fun setupViewModel(){
+    private fun setupViewModel() {
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
 
         categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
     }
 
-    private fun populateSpinnerCategories(){
+    private fun populateSpinnerCategories() {
         //Vai buscar a lista de categorias
         categoryViewModel.categoriesAll.observe(this, Observer { categoriesList ->
             categories = categoriesList
-            //Vai popular o spinner com nome e cor
-            //Lista de Nome
-            var categoriesNames= mutableListOf<String>()
-            var categoriesColors= mutableListOf<String>()
 
-            for(c in categories){
-                categoriesNames.add(c.name)
-                categoriesColors.add(c.color)
+            var pos = 0
+
+            for (i in 0 until categories.size) {
+                if (categories[i].id == product.categoryId) {
+                    pos = i
+                    break
+                }
             }
 
-            val categoriesAdapter: SpinnerAdapter = SpinnerAdapter(activity?.applicationContext!!,categories)
-            spinnerCategories.adapter=categoriesAdapter
+            val categoriesAdapter = SpinnerAdapter(activity?.applicationContext!!, categories)
+            spinnerCategories.adapter = categoriesAdapter
 
-            //setSpinnerListener()
+            spinnerCategories.setSelection(pos)
 
+            //coloca listener no spinner para quando se seleciona caracteristica
+            spinnerCategories.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
 
+                }
+
+                override fun onItemSelected(
+                    p0: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    //coloca a nova categoria no apinner e no
+                    product.category = categories[position]
+                    product.categoryId = id
+                }
+
+            }
         })
-
     }
 
-    private fun setupProduct(){
+    private fun setupProduct() {
         viewProductName.setText(product.name)
         viewProductBrand.setText(product.brand)
     }
 
+    private fun saveProduct() {
 
-    /*interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(uri: Uri)
-    }*/
+        val name = viewProductName.text.toString().trim()
+        if (name.isEmpty() || name.length > 15) {
+            viewProductName.setError("Deve preencher o nome com menos de 15 carateres")
+            return
+        }
+
+        product.name = name
+        product.brand =
+            if (viewProductBrand.text.toString().trim().isEmpty()) viewProductBrand.text.toString() else ""
+        product.quantity = 0
+        product.myList = false
+
+        if (isAdd) {
+            productViewModel.insert(product)
+        } else {
+
+        }
+
+        activity?.supportFragmentManager?.popBackStack()
+
+    }
 
     companion object {
         @JvmStatic

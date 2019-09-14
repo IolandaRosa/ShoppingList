@@ -1,6 +1,9 @@
 package com.example.shoppinglistapp.model
 
-import androidx.room.*
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
+import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "products",
@@ -20,7 +23,7 @@ data class Product(
     var name: String = "",
     var brand: String = "",
     var quantity: Int = 0,
-    @Ignore var category: Category? = null,
+    var category: Category? = null,
     var myList: Boolean = false,
     var categoryId: Long? = null
 )

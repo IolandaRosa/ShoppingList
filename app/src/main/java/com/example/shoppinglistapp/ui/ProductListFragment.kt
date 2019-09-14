@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglistapp.R
 import com.example.shoppinglistapp.adapter.ProductListFragmentAdapter
-import com.example.shoppinglistapp.model.Category
 import com.example.shoppinglistapp.model.Product
+import com.example.shoppinglistapp.viewModel.ProductViewModel
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //private const val ARG_PARAM1 = "param1"
@@ -20,19 +22,13 @@ import com.example.shoppinglistapp.model.Product
 class ProductListFragment : Fragment() {
 
     private lateinit var productRecyclerView: RecyclerView
-    //private var listener: OnProductListFragmentListener? = null
-
-
-    //private var param1: String? = null
-    //private var param2: String? = null
-
+    private lateinit var productsViewModel: ProductViewModel
+    private lateinit var productsListAdapter: ProductListFragmentAdapter
+    private var products = mutableListOf<Product>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }*/
+        productsViewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -50,45 +46,29 @@ class ProductListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        /*fab_add_button.setOnClickListener{
-            //listener?.onClickAddProduct()
-            //adiciona com o view model
-            Toast.makeText(context,"my toast on fragment",Toast.LENGTH_SHORT).show()
-        }*/
-
         setupProductList()
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        /*if (context is OnProductListFragmentListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }*/
     }
 
     override fun onDetach() {
         super.onDetach()
-        //listener = null
     }
 
     private fun setupProductList() {
         productRecyclerView.setHasFixedSize(true)
         productRecyclerView.layoutManager = LinearLayoutManager(activity)
 
-        val productListAdapter = ProductListFragmentAdapter(
-            mutableListOf(
-                Product(
-                    1L, "feijao branco", "compal", 1,
-                    Category(1, "Legumes", "#000000"), false, 1
-                ), Product(
-                    2L, "arroz basmati", "continente", 2, Category(2, "Legumes", "#fffddd"), true, 2
-                )
-            )
-        )
+        productsListAdapter = ProductListFragmentAdapter(products)
 
-        productRecyclerView.adapter = productListAdapter
+        productsViewModel.productsAll.observe(this, Observer { productsList ->
+            products = productsList
+            productsListAdapter.updateProducts(products)
+        })
+
+        productRecyclerView.adapter = productsListAdapter
 
     }
 
