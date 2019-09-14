@@ -19,11 +19,13 @@ import com.example.shoppinglistapp.viewModel.CategoryViewModel
 import com.example.shoppinglistapp.viewModel.ProductViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import java.lang.Exception
 
 class AddProductFragment(private var product: Product, private var isAdd: Boolean) : Fragment() {
 
     private lateinit var viewProductName: TextInputEditText
     private lateinit var viewProductBrand: TextInputEditText
+    private lateinit var viewProductQuantity:TextInputEditText
     private lateinit var spinnerCategories: Spinner
     private lateinit var btnOk: MaterialButton
     private lateinit var categoryViewModel: CategoryViewModel
@@ -44,6 +46,7 @@ class AddProductFragment(private var product: Product, private var isAdd: Boolea
 
         viewProductName = view.findViewById(R.id.editTextProductName)
         viewProductBrand = view.findViewById(R.id.editTextProductBrand)
+        viewProductQuantity = view.findViewById(R.id.editTextProductQuantity)
         spinnerCategories = view.findViewById(R.id.spinnerCategories)
         btnOk = view.findViewById(R.id.material_button_save_product)
 
@@ -119,12 +122,15 @@ class AddProductFragment(private var product: Product, private var isAdd: Boolea
     private fun setupProduct() {
         viewProductName.setText(product.name)
         viewProductBrand.setText(product.brand)
+        viewProductQuantity.setText(product.quantity.toString())
     }
 
     private fun saveProduct() {
 
         val name = viewProductName.text.toString().trim()
         val brand = viewProductBrand.text.toString().trim()
+        val quant = viewProductQuantity.text.toString().trim()
+
         if (name.isEmpty() || name.length > 15) {
             viewProductName.setError("Deve preencher o nome com menos de 15 carateres")
             return
@@ -132,6 +138,13 @@ class AddProductFragment(private var product: Product, private var isAdd: Boolea
 
         product.name = name
         product.brand = brand
+
+        try{
+
+            product.quantity=Integer.valueOf(quant)
+        }catch (e:Exception){
+
+        }
 
 
         if (isAdd) {

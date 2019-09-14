@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -18,14 +17,15 @@ import com.example.shoppinglistapp.model.Product
 import com.example.shoppinglistapp.utils.RecyclerItemTouchHelper
 import com.example.shoppinglistapp.viewModel.ProductViewModel
 import kotlinx.android.synthetic.main.fragment_product_list.*
-import java.text.FieldPosition
 
-class ProductListFragment : Fragment(), RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
+class ProductListFragment : Fragment(), RecyclerItemTouchHelper.RecyclerItemTouchHelperListener,
+    ProductListFragmentAdapter.ProductListListener {
 
     private lateinit var productRecyclerView: RecyclerView
     private lateinit var productsViewModel: ProductViewModel
     private lateinit var productsListAdapter: ProductListFragmentAdapter
     private var products = mutableListOf<Product>()
+    private var init = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +62,7 @@ class ProductListFragment : Fragment(), RecyclerItemTouchHelper.RecyclerItemTouc
         productRecyclerView.setHasFixedSize(true)
         productRecyclerView.layoutManager = LinearLayoutManager(activity)
 
-        productsListAdapter = ProductListFragmentAdapter(products)
+        productsListAdapter = ProductListFragmentAdapter(products, this)
 
         ItemTouchHelper(RecyclerItemTouchHelper(this)).attachToRecyclerView(recyclerViewProductsList)
 
@@ -94,6 +94,15 @@ class ProductListFragment : Fragment(), RecyclerItemTouchHelper.RecyclerItemTouc
             AddProductFragment.newInstance(product, false),
             MainActivity.TAG_FRAGMENT_PRODUCT_ADD
         )?.addToBackStack(MainActivity.TAG_FRAGMENT_PRODUCT_ADD)?.commit()
+    }
+
+    override fun setCheckOnProduct(product: Product) {
+        productsViewModel.update(product)
+    }
+
+    override fun unsetCheckProduct(product: Product) {
+        product.quantity = 0
+        productsViewModel.update(product)
     }
 
     companion object {

@@ -13,7 +13,10 @@ import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 
-class ProductListFragmentAdapter(var products: MutableList<Product>) :
+class ProductListFragmentAdapter(
+    var products: MutableList<Product>,
+    val listener: ProductListListener
+) :
     RecyclerView.Adapter<ProductListFragmentAdapter.ProductViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -31,11 +34,9 @@ class ProductListFragmentAdapter(var products: MutableList<Product>) :
         holder.nameCheckboxView.text = p.name
         holder.nameCheckboxView.isChecked = p.myList
         holder.brandView.text = if (p.brand.isEmpty()) "Sem marca" else p.brand
-        holder.quantityView.hint = (p.quantity).toString()
+        holder.quantityView.text = (p.quantity).toString()
         holder.nameCategoryView.text = p.category?.name
-
         val parseColor = Color.parseColor(p.category?.color!!)
-
         holder.colorCategoryView.setColorFilter(parseColor)
     }
 
@@ -50,14 +51,35 @@ class ProductListFragmentAdapter(var products: MutableList<Product>) :
     inner class ProductViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val nameCheckboxView = v.findViewById<MaterialCheckBox>(R.id.checkboxProductName)
         val brandView = v.findViewById<MaterialTextView>(R.id.textViewProductBrand)
-        val quantityView = v.findViewById<TextInputEditText>(R.id.editTextQuantity)
+        val quantityView = v.findViewById<MaterialTextView>(R.id.textViewQuantity)
         val colorCategoryView = v.findViewById<ImageView>(R.id.imageViewColorCategory)
         val nameCategoryView = v.findViewById<MaterialTextView>(R.id.textViewCategory)
 
         //Para o swipe
         val foregroundLayout = v.findViewById<ConstraintLayout>(R.id.foreground)
         val backgroudLayout = v.findViewById<ConstraintLayout>(R.id.background)
+
+        init {
+            nameCheckboxView.setOnCheckedChangeListener { view, isChecked ->
+
+                val p = products[adapterPosition]
+
+                if (isChecked) {
+                    p.myList = true
+                    listener.setCheckOnProduct(p)
+                } else {
+                    p.myList = false
+                    listener.unsetCheckProduct(p)
+                }
+            }
+        }
+
     }
 
+    interface ProductListListener {
+        fun setCheckOnProduct(product: Product)
+
+        fun unsetCheckProduct(product: Product)
+    }
 }
 

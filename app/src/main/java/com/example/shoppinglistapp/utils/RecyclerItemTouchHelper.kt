@@ -15,8 +15,7 @@ class RecyclerItemTouchHelper(val listener: RecyclerItemTouchHelperListener) :
     ): Boolean {
         return false
     }
-
-    //Chamado quando um viewHolder que é swiped altera
+    
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
 
         if (viewHolder != null) {
@@ -25,8 +24,6 @@ class RecyclerItemTouchHelper(val listener: RecyclerItemTouchHelperListener) :
 
             ItemTouchHelper.Callback.getDefaultUIUtil().onSelected(foregroundView)
         }
-
-
     }
 
     override fun onChildDrawOver(
@@ -74,8 +71,8 @@ class RecyclerItemTouchHelper(val listener: RecyclerItemTouchHelperListener) :
         }
     }
 
-    interface RecyclerItemTouchHelperListener{
-        fun onSwipeDelete(position:Int)
+    interface RecyclerItemTouchHelperListener {
+        fun onSwipeDelete(position: Int)
 
         fun onSwipeUpdate(position: Int)
     }

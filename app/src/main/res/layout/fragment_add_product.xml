@@ -54,6 +54,34 @@
             android:singleLine="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:hintEnabled='true' />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputLayoutProductQuantity"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="2dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="4"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutProductBrand">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextProductQuantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/quantity_request"
+            android:inputType="number"
+            android:singleLine="true"
+            android:maxLength="4"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:hintEnabled='true' />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textview.MaterialTextView
@@ -65,7 +93,7 @@
         android:text="@string/category"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputLayoutProductBrand" />
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutProductQuantity" />
 
     <Spinner
         android:id="@+id/spinnerCategories"
