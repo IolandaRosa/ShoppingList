@@ -19,4 +19,5 @@
     <string name="edit">Editar</string>
     <string name="brand">Marca</string>
     <string name="category">Categoria</string>
+    <string name="delete">Eliminar</string>
 </resources>

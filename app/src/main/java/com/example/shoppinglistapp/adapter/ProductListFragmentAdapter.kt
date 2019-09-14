@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglistapp.R
 import com.example.shoppinglistapp.model.Product
@@ -52,6 +53,10 @@ class ProductListFragmentAdapter(var products: MutableList<Product>) :
         val quantityView = v.findViewById<TextInputEditText>(R.id.editTextQuantity)
         val colorCategoryView = v.findViewById<ImageView>(R.id.imageViewColorCategory)
         val nameCategoryView = v.findViewById<MaterialTextView>(R.id.textViewCategory)
+
+        //Para o swipe
+        val foregroundLayout = v.findViewById<ConstraintLayout>(R.id.foreground)
+        val backgroudLayout = v.findViewById<ConstraintLayout>(R.id.background)
     }
 
 }

@@ -32,6 +32,7 @@ class AddProductFragment(private var product: Product, private var isAdd: Boolea
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupViewModel()
     }
 
     override fun onCreateView(
@@ -52,33 +53,21 @@ class AddProductFragment(private var product: Product, private var isAdd: Boolea
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        setupViewModel()
-
         populateSpinnerCategories()
 
         setupProduct()
 
         btnOk.setOnClickListener {
-            saveProduct();
+            saveProduct()
         }
     }
 
-    /*fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }*/
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        /*if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }*/
     }
 
     override fun onDetach() {
         super.onDetach()
-        //listener = null
     }
 
     private fun setupViewModel() {
@@ -135,21 +124,20 @@ class AddProductFragment(private var product: Product, private var isAdd: Boolea
     private fun saveProduct() {
 
         val name = viewProductName.text.toString().trim()
+        val brand = viewProductBrand.text.toString().trim()
         if (name.isEmpty() || name.length > 15) {
             viewProductName.setError("Deve preencher o nome com menos de 15 carateres")
             return
         }
 
         product.name = name
-        product.brand =
-            if (viewProductBrand.text.toString().trim().isEmpty()) viewProductBrand.text.toString() else ""
-        product.quantity = 0
-        product.myList = false
+        product.brand = brand
+
 
         if (isAdd) {
             productViewModel.insert(product)
         } else {
-
+            productViewModel.update(product)
         }
 
         activity?.supportFragmentManager?.popBackStack()

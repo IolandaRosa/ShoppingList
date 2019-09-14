@@ -5,21 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglistapp.R
 import com.example.shoppinglistapp.adapter.ProductListFragmentAdapter
 import com.example.shoppinglistapp.model.Product
+import com.example.shoppinglistapp.utils.RecyclerItemTouchHelper
 import com.example.shoppinglistapp.viewModel.ProductViewModel
+import kotlinx.android.synthetic.main.fragment_product_list.*
+import java.text.FieldPosition
 
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//private const val ARG_PARAM1 = "param1"
-//private const val ARG_PARAM2 = "param2"
-
-class ProductListFragment : Fragment() {
+class ProductListFragment : Fragment(), RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     private lateinit var productRecyclerView: RecyclerView
     private lateinit var productsViewModel: ProductViewModel
@@ -63,6 +64,8 @@ class ProductListFragment : Fragment() {
 
         productsListAdapter = ProductListFragmentAdapter(products)
 
+        ItemTouchHelper(RecyclerItemTouchHelper(this)).attachToRecyclerView(recyclerViewProductsList)
+
         productsViewModel.productsAll.observe(this, Observer { productsList ->
             products = productsList
             productsListAdapter.updateProducts(products)
@@ -72,19 +75,31 @@ class ProductListFragment : Fragment() {
 
     }
 
-    interface OnProductListFragmentListener {
+    override fun onSwipeDelete(position: Int) {
 
-        fun onClickAddProduct()
+        val product = products[position]
+
+        products.removeAt(position)
+
+        productsViewModel.delete(product)
+        productsListAdapter.updateProducts(products)
+    }
+
+    override fun onSwipeUpdate(position: Int) {
+
+        val product = products[position]
+
+        fragmentManager?.beginTransaction()?.replace(
+            R.id.fragment_container,
+            AddProductFragment.newInstance(product, false),
+            MainActivity.TAG_FRAGMENT_PRODUCT_ADD
+        )?.addToBackStack(MainActivity.TAG_FRAGMENT_PRODUCT_ADD)?.commit()
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(/*param1: String, param2: String*/) =
-            ProductListFragment()/*.apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }*/
+        fun newInstance() =
+            ProductListFragment()
     }
 }
 
