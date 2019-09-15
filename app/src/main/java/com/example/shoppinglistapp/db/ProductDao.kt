@@ -12,11 +12,14 @@ interface ProductDao {
     fun getAll(): LiveData<MutableList<Product>>
 
     @Insert(onConflict = REPLACE)
-    fun insert(product: Product): Long
+    suspend fun insert(product: Product): Long
 
     @Update(onConflict = REPLACE)
-    fun update(product: Product)
+    suspend fun update(product: Product)
 
     @Delete
-    fun delete(product: Product)
+    suspend fun delete(product: Product)
+
+    @Query("SELECT * FROM products WHERE myList=1")
+    fun getMyList():LiveData<MutableList<Product>>
 }

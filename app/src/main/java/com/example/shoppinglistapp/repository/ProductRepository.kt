@@ -21,4 +21,8 @@ class ProductRepository(private var productDao: ProductDao) {
     suspend fun deleteProduct(product: Product) {
         productDao.delete(product)
     }
+
+    fun getMyList():LiveData<MutableList<Product>>{
+        return productDao.getMyList()
+    }
 }

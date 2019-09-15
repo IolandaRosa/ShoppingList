@@ -19,13 +19,12 @@ import com.example.shoppinglistapp.viewModel.CategoryViewModel
 import com.example.shoppinglistapp.viewModel.ProductViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
-import java.lang.Exception
 
 class AddProductFragment(private var product: Product, private var isAdd: Boolean) : Fragment() {
 
     private lateinit var viewProductName: TextInputEditText
     private lateinit var viewProductBrand: TextInputEditText
-    private lateinit var viewProductQuantity:TextInputEditText
+    private lateinit var viewProductQuantity: TextInputEditText
     private lateinit var spinnerCategories: Spinner
     private lateinit var btnOk: MaterialButton
     private lateinit var categoryViewModel: CategoryViewModel
@@ -139,10 +138,10 @@ class AddProductFragment(private var product: Product, private var isAdd: Boolea
         product.name = name
         product.brand = brand
 
-        try{
+        try {
 
-            product.quantity=Integer.valueOf(quant)
-        }catch (e:Exception){
+            product.quantity = Integer.valueOf(quant)
+        } catch (e: Exception) {
 
         }
 

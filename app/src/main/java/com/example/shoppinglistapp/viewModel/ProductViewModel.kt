@@ -15,12 +15,15 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
 
     var productsAll: LiveData<MutableList<Product>>
 
+    var myList: LiveData<MutableList<Product>>
+
     init {
         val productDao = ShoppingListDatabase.getInstance(application).productDao()
 
         productRepository = ProductRepository(productDao)
 
         productsAll = productRepository?.getAllProducts()!!
+        myList = productRepository?.getMyList()!!
     }
 
     fun insert(product: Product) = GlobalScope.launch {

@@ -30,15 +30,15 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
-        setupProductListFragment()
+        setupProductListFragment(false)
 
         fab.setOnClickListener {
             setupAddProductFragment()
         }
     }
 
-    private fun setupProductListFragment() {
-        productListFragment = ProductListFragment.newInstance()
+    private fun setupProductListFragment(isMyList:Boolean) {
+        productListFragment = ProductListFragment.newInstance(isMyList)
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, productListFragment, TAG_FRAGMENT_PRODUCT_LIST)
             .commit()
@@ -61,11 +61,12 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.action_home -> {
-                setupProductListFragment()
+                setupProductListFragment(false)
                 return true
             }
             R.id.action_my_list -> {
-                return super.onOptionsItemSelected(item)
+                setupProductListFragment(true)
+                return true
             }
             R.id.action_add_search -> {
                 return super.onOptionsItemSelected(item)

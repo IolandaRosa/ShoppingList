@@ -16,9 +16,11 @@ import com.example.shoppinglistapp.adapter.ProductListFragmentAdapter
 import com.example.shoppinglistapp.model.Product
 import com.example.shoppinglistapp.utils.RecyclerItemTouchHelper
 import com.example.shoppinglistapp.viewModel.ProductViewModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_product_list.*
 
-class ProductListFragment : Fragment(), RecyclerItemTouchHelper.RecyclerItemTouchHelperListener,
+class ProductListFragment(val isMyList: Boolean) : Fragment(),
+    RecyclerItemTouchHelper.RecyclerItemTouchHelperListener,
     ProductListFragmentAdapter.ProductListListener {
 
     private lateinit var productRecyclerView: RecyclerView
@@ -66,10 +68,18 @@ class ProductListFragment : Fragment(), RecyclerItemTouchHelper.RecyclerItemTouc
 
         ItemTouchHelper(RecyclerItemTouchHelper(this)).attachToRecyclerView(recyclerViewProductsList)
 
-        productsViewModel.productsAll.observe(this, Observer { productsList ->
-            products = productsList
-            productsListAdapter.updateProducts(products)
-        })
+        if (isMyList) {
+            productsViewModel.myList.observe(this, Observer { productsList ->
+                products = productsList
+                productsListAdapter.updateProducts(products)
+            })
+        } else {
+            productsViewModel.productsAll.observe(this, Observer { productsList ->
+                products = productsList
+                productsListAdapter.updateProducts(products)
+            })
+        }
+
 
         productRecyclerView.adapter = productsListAdapter
 
@@ -83,6 +93,25 @@ class ProductListFragment : Fragment(), RecyclerItemTouchHelper.RecyclerItemTouc
 
         productsViewModel.delete(product)
         productsListAdapter.updateProducts(products)
+
+        showUndoSnackBar(product)
+    }
+
+    private fun showUndoSnackBar(product: Product) {
+
+        val view = activity?.findViewById<View>(R.id.fragment_container)
+
+        val sandbar: Snackbar =
+            Snackbar.make(view!!, "Deseja anular a remoção?", Snackbar.LENGTH_LONG)
+        sandbar.setAction(resources.getString(R.string.ok)) {
+            undoDelete(product)
+        }
+
+        sandbar.show()
+    }
+
+    private fun undoDelete(product: Product) {
+        productsViewModel.insert(product)
     }
 
     override fun onSwipeUpdate(position: Int) {
@@ -107,8 +136,8 @@ class ProductListFragment : Fragment(), RecyclerItemTouchHelper.RecyclerItemTouc
 
     companion object {
         @JvmStatic
-        fun newInstance() =
-            ProductListFragment()
+        fun newInstance(isMyList: Boolean) =
+            ProductListFragment(isMyList)
     }
 }
 
