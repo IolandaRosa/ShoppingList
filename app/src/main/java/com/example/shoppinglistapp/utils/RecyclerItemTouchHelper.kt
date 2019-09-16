@@ -15,7 +15,7 @@ class RecyclerItemTouchHelper(val listener: RecyclerItemTouchHelperListener) :
     ): Boolean {
         return false
     }
-    
+
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
 
         if (viewHolder != null) {

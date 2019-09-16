@@ -22,7 +22,11 @@ class ProductRepository(private var productDao: ProductDao) {
         productDao.delete(product)
     }
 
-    fun getMyList():LiveData<MutableList<Product>>{
+    fun getMyList(): LiveData<MutableList<Product>> {
         return productDao.getMyList()
+    }
+
+    fun search(query: String): LiveData<MutableList<Product>> {
+        return productDao.searchByQuery(query)
     }
 }

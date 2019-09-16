@@ -21,5 +21,8 @@ interface ProductDao {
     suspend fun delete(product: Product)
 
     @Query("SELECT * FROM products WHERE myList=1")
-    fun getMyList():LiveData<MutableList<Product>>
+    fun getMyList(): LiveData<MutableList<Product>>
+
+    @Query("SELECT * FROM products WHERE name LIKE '%' || :query ||'%' OR brand LIKE '%' || :query ||'%' OR category LIKE '%' || :query || '%'")
+    fun searchByQuery(query: String): LiveData<MutableList<Product>>
 }

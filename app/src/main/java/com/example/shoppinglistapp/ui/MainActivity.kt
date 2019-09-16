@@ -1,5 +1,7 @@
 package com.example.shoppinglistapp.ui
 
+import android.app.SearchManager
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -30,6 +32,8 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
+        setupSearchableActivity()
+
         setupProductListFragment(false)
 
         fab.setOnClickListener {
@@ -37,8 +41,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupProductListFragment(isMyList:Boolean) {
-        productListFragment = ProductListFragment.newInstance(isMyList)
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        setupSearchableActivity()
+    }
+
+    private fun setupSearchableActivity() {
+        if (Intent.ACTION_SEARCH == intent.action) {
+            intent.getStringExtra(SearchManager.QUERY)?.also { query ->
+                doMySearch(query)
+            }
+        }
+    }
+
+    fun doMySearch(query: String) {
+        setupProductListFragment(false, query)
+        //Toast.makeText(this, "$query", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setupProductListFragment(isMyList: Boolean, query: String = "") {
+        productListFragment = ProductListFragment.newInstance(isMyList, query)
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, productListFragment, TAG_FRAGMENT_PRODUCT_LIST)
             .commit()
@@ -47,6 +70,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.menu_main, menu)
+
         return true
     }
 
@@ -69,7 +93,9 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.action_add_search -> {
-                return super.onOptionsItemSelected(item)
+
+                onSearchRequested()
+                return true
             }
             else -> return super.onOptionsItemSelected(item)
 

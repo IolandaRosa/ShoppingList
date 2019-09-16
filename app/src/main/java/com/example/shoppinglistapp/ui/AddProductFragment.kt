@@ -1,6 +1,5 @@
 package com.example.shoppinglistapp.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -40,7 +39,6 @@ class AddProductFragment(private var product: Product, private var isAdd: Boolea
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_add_product, container, false)
 
         viewProductName = view.findViewById(R.id.editTextProductName)
@@ -62,14 +60,6 @@ class AddProductFragment(private var product: Product, private var isAdd: Boolea
         btnOk.setOnClickListener {
             saveProduct()
         }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
     }
 
     private fun setupViewModel() {

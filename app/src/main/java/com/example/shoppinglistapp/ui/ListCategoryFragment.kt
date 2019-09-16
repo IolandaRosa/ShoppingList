@@ -1,6 +1,5 @@
 package com.example.shoppinglistapp.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,20 +32,12 @@ class ListCategoryFragment : Fragment(), OnDeleteCategoryListener, OnEditCategor
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         val view = inflater.inflate(R.layout.fragment_list_category, container, false)
 
         recyclerViewCategoryList = view.findViewById(R.id.recyclerViewCategoriesList)
 
         return view
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

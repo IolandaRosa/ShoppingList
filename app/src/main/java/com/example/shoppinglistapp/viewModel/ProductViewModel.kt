@@ -37,4 +37,8 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     fun delete(product: Product) = GlobalScope.launch {
         productRepository?.deleteProduct(product)
     }
+
+    fun search(query: String): LiveData<MutableList<Product>>? {
+        return productRepository?.search(query)
+    }
 }

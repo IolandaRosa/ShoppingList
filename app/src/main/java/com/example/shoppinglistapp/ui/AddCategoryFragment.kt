@@ -1,6 +1,5 @@
 package com.example.shoppinglistapp.ui
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,10 +24,6 @@ class AddCategoryFragment(private var category: Category, private var isAdd: Boo
     private lateinit var viewColorChoosen: ImageView
     private lateinit var btnOk: MaterialButton
     private var init = true
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -90,15 +85,6 @@ class AddCategoryFragment(private var category: Category, private var isAdd: Boo
         }
 
         activity?.supportFragmentManager?.popBackStack()
-    }
-
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
     }
 
     companion object {

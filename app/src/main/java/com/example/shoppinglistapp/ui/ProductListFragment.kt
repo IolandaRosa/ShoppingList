@@ -1,6 +1,5 @@
 package com.example.shoppinglistapp.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +18,7 @@ import com.example.shoppinglistapp.viewModel.ProductViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_product_list.*
 
-class ProductListFragment(val isMyList: Boolean) : Fragment(),
+class ProductListFragment(val isMyList: Boolean, val query: String) : Fragment(),
     RecyclerItemTouchHelper.RecyclerItemTouchHelperListener,
     ProductListFragmentAdapter.ProductListListener {
 
@@ -52,14 +51,6 @@ class ProductListFragment(val isMyList: Boolean) : Fragment(),
         setupProductList()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-    }
-
     private fun setupProductList() {
         productRecyclerView.setHasFixedSize(true)
         productRecyclerView.layoutManager = LinearLayoutManager(activity)
@@ -68,7 +59,12 @@ class ProductListFragment(val isMyList: Boolean) : Fragment(),
 
         ItemTouchHelper(RecyclerItemTouchHelper(this)).attachToRecyclerView(recyclerViewProductsList)
 
-        if (isMyList) {
+        if (!query.isNullOrEmpty()) {
+            productsViewModel.search(query)?.observe(this, Observer { productsList ->
+                products = productsList
+                productsListAdapter.updateProducts(products)
+            })
+        } else if (isMyList) {
             productsViewModel.myList.observe(this, Observer { productsList ->
                 products = productsList
                 productsListAdapter.updateProducts(products)
@@ -136,8 +132,8 @@ class ProductListFragment(val isMyList: Boolean) : Fragment(),
 
     companion object {
         @JvmStatic
-        fun newInstance(isMyList: Boolean) =
-            ProductListFragment(isMyList)
+        fun newInstance(isMyList: Boolean, query: String) =
+            ProductListFragment(isMyList, query)
     }
 }
 
